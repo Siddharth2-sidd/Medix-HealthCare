@@ -13,9 +13,10 @@ function Admin(){
         <div>
             <h2>Admin Dashboard</h2>
             <ul>
+                
             {policy.map(p=>(
                 <li key={p.id}>
-                    {p.PolicyNumber}-{p.CoverageAmount}
+                    {p.policyNumber}-{p.coverageAmount}
                 </li>
             ))}
             </ul>

@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState,useEffect} from 'react';
 import api from "../services/api.js";
 
 function Finance(){
@@ -6,7 +6,7 @@ function Finance(){
 
     useEffect(()=>{
         api.get("/Finance/ApprovedClaim")
-        .then(()=>res.data);
+        .then(res => setClaim(res.data));
     },[])
 
     const pay = (id)=>{
@@ -18,7 +18,7 @@ function Finance(){
             {claim.map(c=>(
                 <div key={c.id}>
                     {c.claimNumber}
-                    <button onClick={pay}>Submit</button>
+                    <button onClick={()=>pay(c.id)}>Submit</button>
                 </div>))}
         </div>
     )

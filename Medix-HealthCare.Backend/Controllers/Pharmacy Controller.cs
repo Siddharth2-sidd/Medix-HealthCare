@@ -10,6 +10,7 @@ using HealthcareSystem.Models;
 using AutoMapper.Configuration.Annotations;
 using HealthcareSystem.DTOs.Claim_DTOs;
 using AutoMapper;
+using Medix_HealthCare.Backend.DTOs.Claim_DTOs;
 
 
 namespace HealthcareSystem.Controllers
@@ -31,10 +32,10 @@ namespace HealthcareSystem.Controllers
         }
 
         [HttpPost("submit")]
-        public async Task<IActionResult> SubmitNCPDP([FromBody] string rawNCPDP) {
-            if (string.IsNullOrEmpty(rawNCPDP))
+        public async Task<IActionResult> SubmitNCPDP([FromBody] NcpdpRequestDTO dto) {
+            if (string.IsNullOrEmpty(dto.RawData))
                 return BadRequest("NCPDP data require");
-            var parsed = NcpdpParser.Parser(rawNCPDP);
+            var parsed = NcpdpParser.Parser(dto.RawData);
 
             // Valid Policy
             var policy = await _context.Policies.FirstOrDefaultAsync(p => p.PolicyNumber ==  parsed.PolicyNumber);
@@ -59,7 +60,7 @@ namespace HealthcareSystem.Controllers
                 Quantity = parsed.Quantity,
                 ClaimAmount = parsed.Amount,
                 Status = "pending",
-                NcpdpRawData = rawNCPDP,
+                NcpdpRawData = dto.RawData,
                 SubmittedDate = DateTime.Now
             };
 

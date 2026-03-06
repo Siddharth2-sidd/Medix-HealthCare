@@ -1,22 +1,46 @@
-import React,{useState} from 'react';
+import React,{ useState } from "react";
 import api from "../services/api.js";
 
-function Pharmacy(){
-    const [rawData, setrawData] = useState("");
+function Pharmacy() {
 
-    const submitClaim = async()=>{
-        api.post("/api/Pharmacy_/submit",rawData,{
-            header:{"Content-Type":"text/plain"}
-        });
-        alert("Claim Submitted");
+  const [rawData, setRawData] = useState("");
+
+  const submitClaim = async () => {
+    try {
+
+      await api.post(
+        "/Pharmacy_/submit",{
+        rawData:rawData 
+    });
+
+      alert("Claim Submitted");
+
+    } catch (error) {
+      console.error(error);
+      alert("Error submitting claim");
     }
+  };
 
-    return(
+  return (
     <div>
-        <h2>Pharmacy Dhashboard</h2>
-        <textarea rows="10" cols="50" placeholder="paste raw data here" onChange={e=> setrawData(e.target.value)} />
-        <br/>
-        <button onClick={submitClaim}>Submit</button>
-    </div>)
+
+      <h2>Pharmacy Dashboard</h2>
+
+      <textarea
+        rows="10"
+        cols="50"
+        placeholder="Paste NCPDP data"
+        onChange={(e) => setRawData(e.target.value)}
+      />
+
+      <br/>
+
+      <button onClick={submitClaim}>
+        Submit Claim
+      </button>
+
+    </div>
+  );
 }
+
 export default Pharmacy;

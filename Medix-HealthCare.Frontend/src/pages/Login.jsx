@@ -10,16 +10,16 @@ function Login(){
     const  handleChanges = async()=>{
         try{
             const response = await api.post('/auth/login',{email,password});
-            localStorage.getItem("token",response.data.token);
-            localStarage.getItem("role",response.data.role);
+            localStorage.setItem("token",response.data.token);
+            localStorage.setItem("role",response.data.role);
 
-            if(response.data.token === "Admin")
+            if(response.data.role === "Admin")
                 navigate("/admin");
-            else if(response.data.token === "Pharmacy")
+            else if(response.data.role === "Pharmacy")
                 navigate("/pharmacy");
-            else if(response.data.token === "ClaimOfficer")
+            else if(response.data.role === "ClaimOfficer")
                 navigate("/claimOfficer");
-            else if(response.data.token === "finance")
+            else if(response.data.role === "Finance")
                 navigate("/finance");
         }catch(err){alert(err)}
     };

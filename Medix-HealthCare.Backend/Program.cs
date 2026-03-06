@@ -41,6 +41,18 @@ builder.Services.AddAutoMapper(cg => { }, typeof(MappingProfile));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Cors Policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Allow specific origin", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+               .AllowAnyHeader()
+               .AllowAnyMethod()
+               .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -54,6 +66,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseRouting();
+app.UseCors("Allow specific origin");
 app.UseAuthorization();
 
 app.MapControllers();
